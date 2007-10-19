@@ -1,6 +1,6 @@
 Name:           bogosec
 Version:        20050315
-Release:        %mkrel 2
+Release:        %mkrel 3
 Epoch:          0
 Summary:        Source code security quality metric
 URL:            http://bogosec.sourceforge.net/
@@ -33,7 +33,7 @@ each scanner).
 
 %install
 %{__rm} -rf %{buildroot}
-%makeinstall_std
+%{makeinstall_std}
 
 %clean
 %{__rm} -rf %{buildroot}
@@ -46,5 +46,3 @@ each scanner).
 %{_datadir}/%{name}
 %{_mandir}/man1/*
 %config(noreplace) %{_sysconfdir}/%{name}.conf
-
-
