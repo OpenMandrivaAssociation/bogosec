@@ -16,6 +16,7 @@ Requires:       rpm-build
 Requires:       tar
 BuildRequires:  flawfinder
 BuildArch:      noarch
+BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root
 
 %description
 BogoSec is a command-line perl script that wraps various scanners 
