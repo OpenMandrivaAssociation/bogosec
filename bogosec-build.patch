@@ -1,0 +1,126 @@
+--- bogosec-20050315/bogosec.orig	2006-05-10 00:02:25.000000000 -0400
++++ bogosec-20050315/bogosec	2006-05-10 00:02:48.000000000 -0400
+@@ -50,7 +50,7 @@
+ 		logging			=>	undef,
+ 		min_sev			=>  	0,
+ 		no_header_files 	=>	undef,
+-		plugin_dir 		=> 	"/usr/local/bogosec/plugins/",
++		plugin_dir 		=> 	"/usr/share/bogosec/plugins/",
+ 		sev_range_max		=>	10,
+ 		scan_timeout		=>	undef,
+ 		temp_log_dir		=>	"/tmp/",
+--- bogosec-20050315/Makefile.orig	2006-05-09 23:50:36.000000000 -0400
++++ bogosec-20050315/Makefile	2006-05-09 23:56:55.000000000 -0400
+@@ -12,37 +12,27 @@
+ #	   of BogoSec components
+ ###########################################################
+ 
++DESTDIR=
++bindir=/usr/bin
++datadir=/usr/share
++mandir=/usr/share/man
++sysconfdir=/etc
++mkdir_p=mkdir -p
++install=install -c
++
+ all:
+ 	@echo
+ 	@echo Nothing to be done... please use \'make install\' to install.
+ 	@echo
+ 
+ install:
+-	@echo Installing bogosec...
+-	cp bogosec /usr/local/bin/
+-	chmod a+rx /usr/local/bin/bogosec
+-	cp bogosec_wrapper /usr/local/bin/
+-	chmod a+rx /usr/local/bin/bogosec_wrapper
+-	cp bogosec.conf /etc/
+-	chmod a+r /etc/bogosec.conf
+-	mkdir -p /usr/local/bogosec/plugins
+-	mkdir -p /usr/local/bogosec/documents
+-	chmod -R a+r /usr/local/bogosec/
+-	cp plugins/*.pm /usr/local/bogosec/plugins/
+-	chmod a+rx /usr/local/bogosec/plugins/*.pm
+-	cp man/bogosec.1 /usr/share/man/man1/
+-	chmod a+r /usr/share/man/man1/bogosec.1
+-	cp man/bogosec_wrapper.1 /usr/share/man/man1/
+-	chmod a+r /usr/share/man/man1/bogosec_wrapper.1
+-	@echo done!
+-
+-uninstall:
+-	@echo Uninstalling bogosec...
+-	rm -f /usr/local/bin/bogosec
+-	rm -f /usr/local/bin/bogosec_wrapper
+-	rm -f /etc/bogosec.conf
+-	rm -rf /usr/local/bogosec/
+-	rm /usr/share/man/man1/bogosec_wrapper.1
+-	rm /usr/share/man/man1/bogosec.1
+-	@echo done!
+-
++	$(mkdir_p) $(DESTDIR)$(bindir)
++	$(install) -m 755 bogosec $(DESTDIR)$(bindir)
++	$(install) -m 755 bogosec_wrapper $(DESTDIR)$(bindir)
++	$(mkdir_p) $(DESTDIR)$(sysconfdir)
++	$(install) -m 644 bogosec.conf $(DESTDIR)$(sysconfdir)
++	$(mkdir_p) $(DESTDIR)$(datadir)/bogosec/plugins
++	$(install) -m 644 plugins/*.pm $(DESTDIR)$(datadir)/bogosec/plugins
++	$(mkdir_p) $(DESTDIR)$(mandir)/man1
++	$(install) -m 644 man/bogosec.1 $(DESTDIR)$(mandir)/man1
++	$(install) -m 644 man/bogosec_wrapper.1 $(DESTDIR)$(mandir)/man1
+--- bogosec-20050315/man/bogosec_wrapper.1.orig	2006-05-10 00:00:17.000000000 -0400
++++ bogosec-20050315/man/bogosec_wrapper.1	2006-05-10 00:00:34.000000000 -0400
+@@ -28,7 +28,7 @@
+ Specify a plugin to use.
+ .TP
+ .BI "--plugin-dir" " directory"
+-Specify the directory where the plugins are stored. Default is /usr/local/bogosec/plugins.
++Specify the directory where the plugins are stored. Default is /usr/share/bogosec/plugins.
+ .TP
+ .BI "--sev-range-max" " number"
+ Specify the maximum severity value to be used in calculating the severity value range.  The default is 10.
+--- bogosec-20050315/man/bogosec.1.orig	2005-03-15 15:01:35.000000000 -0500
++++ bogosec-20050315/man/bogosec.1	2006-05-10 00:13:35.000000000 -0400
+@@ -42,7 +42,7 @@
+ Specify a plugin to use. If no plugins are defined on the command-line, all of the plugins in the plugins_dir will be used. This option can be passed more than once, to specify a set of scanners to use. Each scanner requires a separate instance of the --plugin flag (please see examples). Optionally, a set of command-line arguments can be passed to the scanner - this feature must be used with care.  Keep in mind that the plugin requires a certain formatting of the scanner output (for example, '-SQ' is always passed to flawfinder, and '-w 3' is always passed to rats).  You can pass additional command-line arguments using this option, but be aware of the effect it might have on the formatting of the scanner output, and the effect that will have on the plugin's ability to parse it correctly.  If you must change the defaults ('-SQ', '-w 3', etc.) you must edit the plugin directly.
+ .TP
+ .BI "--plugin-dir" " directory"
+-Specify the directory where the plugins are stored.  Default is /usr/local/bogosec/plugins.
++Specify the directory where the plugins are stored.  Default is /usr/share/bogosec/plugins.
+ .TP
+ .BI "--sev-range-max" " number"
+ Specify the maximum severity value to be used in calculating the severity value range.  The default is 10.  For example, setting --sev-range-max to 50 would mean that the severity results would now be on a scale of 0-50 instead of on a scale of 0-10.  This can be used to scale the result if more granularity is required. NOTE: -v 1 will not work if this option is used.
+@@ -69,14 +69,10 @@
+ .RS
+ Default user configuration file (overrides the settings in /etc/bogosec.conf).  This file is not created during an installation, you must create it yourself.
+ .RE
+-.I /usr/local/bogosec/plugins/
++.I /usr/share/bogosec/plugins/
+ .RS
+ Default plugins directory.  Can be changed with --plugin-dir option.  Plugins must be executable, and must end in .pm as per convention.
+ .RE
+-.I /usr/local/bogosec/documents/
+-.RS
+-Directory of BogoSec documentation and other germane documents.
+-.RE
+ .SH SCANNERS
+ .TP
+ FlawFinder : http://www.dwheeler.com/flawfinder
+--- bogosec-20050315/README.orig	2006-05-10 00:13:50.000000000 -0400
++++ bogosec-20050315/README	2006-05-10 00:14:33.000000000 -0400
+@@ -21,8 +21,8 @@
+ 	cd bogosec*
+ 
+  - Install BogoSec using "make install"
+-	This will place the tool executables in /usr/local/bin.
+-	The scanner plugins will be placed in /usr/local/bogosec/plugins.
++	This will place the tool executables in /usr/bin.
++	The scanner plugins will be placed in /usr/share/bogosec/plugins.
+ 
+ RUN BogoSec:
+ ============
+@@ -41,4 +41,4 @@
+ 
+ REMOVAL:
+ ========
+- - If needed, uninstall the tool using "make uninstall"
++ - If needed, uninstall the tool using "rpm -e bogosec" (as root)
