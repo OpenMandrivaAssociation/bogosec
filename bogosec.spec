@@ -46,3 +46,30 @@ each scanner).
 %{_datadir}/%{name}
 %{_mandir}/man1/*
 %config(noreplace) %{_sysconfdir}/%{name}.conf
+
+
+%changelog
+* Thu Dec 09 2010 Oden Eriksson <oeriksson@mandriva.com> 0:20050315-7mdv2011.0
++ Revision: 616811
+- the mass rebuild of 2010.0 packages
+
+* Wed Sep 02 2009 Thierry Vignaud <tv@mandriva.org> 0:20050315-6mdv2010.0
++ Revision: 424666
+- rebuild
+
+* Wed Jul 23 2008 Thierry Vignaud <tv@mandriva.org> 0:20050315-5mdv2009.0
++ Revision: 243359
+- rebuild
+- kill re-definition of %%buildroot on Pixel's request
+
+  + Olivier Blin <oblin@mandriva.com>
+    - restore BuildRoot
+
+* Fri Oct 19 2007 David Walluck <walluck@mandriva.org> 0:20050315-3mdv2008.1
++ Revision: 100271
+- rebuild
+
+
+* Wed May 10 2006 David Walluck <walluck@mandriva.org> 0:20050315-1mdk
+- release
+
