@@ -1,6 +1,6 @@
 Name:		bogosec
 Version:	20050315
-Release:	8
+Release:	9
 Epoch:		0
 Summary:	Source code security quality metric
 URL:		http://bogosec.sourceforge.net/
