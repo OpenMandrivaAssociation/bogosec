@@ -3,7 +3,7 @@ Version:	20050315
 Release:	9
 Epoch:		0
 Summary:	Source code security quality metric
-URL:		http://bogosec.sourceforge.net/
+URL:		https://bogosec.sourceforge.net/
 Source0:	http://download.sourceforge.net/bogosec/bogosec-%{version}.tar.bz2
 Patch0:		%{name}-build.patch
 License:	CPL
