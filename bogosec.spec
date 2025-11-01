@@ -1,11 +1,10 @@
 Name:		bogosec
-Version:	20050315
-Release:	9
-Epoch:		0
+Version:	2.3
+Release:	1
 Summary:	Source code security quality metric
 URL:		https://bogosec.sourceforge.net/
-Source0:	http://download.sourceforge.net/bogosec/bogosec-%{version}.tar.bz2
-Patch0:		%{name}-build.patch
+Source0:	https://launchpad.net/ubuntu/+archive/primary/+sourcefiles/bogosec/%{version}-0ubuntu1/bogosec_%{version}.orig.tar.gz
+#Patch0:		%{name}-build.patch
 License:	CPL
 Group:		Development/Other
 Requires:	flawfinder
@@ -23,19 +22,19 @@ code. Easily extendabile framework (with accompanying perl modules for
 each scanner).
 
 %prep
-%setup -q
-%patch0 -p1
+%autosetup -p1 -n %{name}.orig
 
 %build
 ./configure
 
 %install
-%makeinstall_std
+mkdir -p %{buildroot}%{_bindir} %{buildroot}%{_sysconfdir} %{buildroot}%{_mandir}/man1
+%make_install
 
 %files
 %doc README
 %attr(0755,root,root) %{_bindir}/%{name}
 %attr(0755,root,root) %{_bindir}/%{name}_wrapper
-%{_datadir}/%{name}
+%{_prefix}/lib/%{name}
 %{_mandir}/man1/*
 %config(noreplace) %{_sysconfdir}/%{name}.conf
