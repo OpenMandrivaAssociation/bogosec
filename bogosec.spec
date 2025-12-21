@@ -12,6 +12,11 @@ Requires:	gzip
 Requires:	perl
 Requires:	rpm
 Requires:	rpm-build
+BuildRequires:	autoconf
+BuildRequires:	automake
+BuildRequires:	libtool-base
+BuildRequires:	slibtool
+BuildRequires:	make
 BuildRequires:	flawfinder
 BuildArch:	noarch
 
